@@ -56,8 +56,12 @@ public class AccountController : ControllerBase
         if(id != account.Id)
             return BadRequest(); //devuelve status 400
 
-        if(id != account.ClientId)
-        return BadRequest(); 
+        // if(id != account.ClientId)
+        //     return BadRequest(); 
+
+        if(account.Balance<0){
+            return BadRequest();
+        }
 
         var accountToUpdate = _service.GetById(id);
 
