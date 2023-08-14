@@ -36,7 +36,12 @@ public class AccountController : ControllerBase
     public IActionResult Create(Account account) 
     {
         var newAccount = _service.Create(account);
-  
+
+        // if(account.ClientId.HasValue && newAccount == null)
+        // {
+        //     return BadRequest(); 
+        // }
+
         if(account.ClientId is null)
         {
             return BadRequest(); 
@@ -50,6 +55,9 @@ public class AccountController : ControllerBase
     {
         if(id != account.Id)
             return BadRequest(); //devuelve status 400
+
+        if(id != account.ClientId)
+        return BadRequest(); 
 
         var accountToUpdate = _service.GetById(id);
 
