@@ -20,7 +20,7 @@ public partial class Account
 
     public DateTime RegDate { get; set; }
 
-    public virtual AccountType AccountTypeNavigation { get; set; } = null!;
+    public virtual AccountType? AccountTypeNavigation { get; set; } = null;
 
     public virtual ICollection<BankTransaction> BankTransactions { get; set; } = new List<BankTransaction>();
 

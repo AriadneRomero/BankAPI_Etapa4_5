@@ -16,6 +16,7 @@ builder.Services.AddSqlServer<BankContext>(builder.Configuration.GetConnectionSt
 //Service Layer
 builder.Services.AddScoped<ClientService>();
 builder.Services.AddScoped<AccountService>();
+builder.Services.AddScoped<AccountTypeService>();
 //AddScoped: metodo que nos permite inyectar un servicio en especifico a la aplicación
 //hay diferentes tipos de servicios con distintos ciclos de vida que se pueden incluir
 

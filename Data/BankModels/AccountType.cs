@@ -10,4 +10,9 @@ public partial class AccountType
     public DateTime RegDate { get; set; }
 
     public virtual ICollection<Account> Accounts { get; set; } = new List<Account>();
+
+    public static implicit operator AccountType(int v)
+    {
+        throw new NotImplementedException();
+    }
 }

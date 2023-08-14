@@ -32,4 +32,52 @@ public class AccountController : ControllerBase
         return account;
     }
 
+    [HttpPost]
+    public IActionResult Create(Account account) 
+    {
+        var newAccount = _service.Create(account);
+  
+        if(account.ClientId is null)
+        {
+            return BadRequest(); 
+        }
+
+        return CreatedAtAction(nameof(GetById), new { id = account.Id}, newAccount);
+    }
+
+    [HttpPut("{id}")]
+    public IActionResult Update(int id, Account account)
+    {
+        if(id != account.Id)
+            return BadRequest(); //devuelve status 400
+
+        var accountToUpdate = _service.GetById(id);
+
+        if(accountToUpdate is not null)
+        {
+            _service.Update(id, account);
+            return NoContent();
+        }
+        else
+        {
+            return NotFound();
+        }
+    }
+
+    [HttpDelete("{id}")]
+    public IActionResult Delete(int id)
+    {
+        var accountToDelete = _service.GetById(id);
+
+        if(accountToDelete is not null)
+        {
+            _service.Delete(id);
+            return Ok();
+        }
+        else
+        {
+            return NotFound();
+        }
+    }
+
 }
