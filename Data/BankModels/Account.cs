@@ -5,10 +5,11 @@ namespace BankAPI.Data.BankModels;
 
 public partial class Account
 {
-    public Account()
-    {
-        BankTransactions = new HashSet<BankTransaction>();
-    }
+    // public Account()
+    // {
+    //     BankTransactions = new HashSet<BankTransaction>();
+    // }
+    
     public int Id { get; set; }
 
     public int AccountType { get; set; }
@@ -19,7 +20,7 @@ public partial class Account
 
     public DateTime RegDate { get; set; }
 
-    public virtual AccountType AccountTypeNavigation { get; set; } = null!;
+    public virtual AccountType? AccountTypeNavigation { get; set; } = null;
 
     public virtual ICollection<BankTransaction> BankTransactions { get; set; } = new List<BankTransaction>();
 
