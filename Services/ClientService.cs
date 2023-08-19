@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using BankAPI.Data;
 using BankAPI.Data.BankModels;
 
@@ -12,32 +13,32 @@ public class ClientService
     }
 
 //GET
-     public IEnumerable<Client> GetAll() 
+     public async Task<IEnumerable<Client>> GetAll() 
     {
-        return _context.Clients.ToList(); 
+        return await _context.Clients.ToListAsync(); 
     }
 
-    public Client? GetById(int id) //Obtener el cliente por el id
+    public async Task<Client?> GetById(int id) //Obtener el cliente por el id
     //Pedimos un objeto cliente o objeto nulo
     {
-        return _context.Clients.Find(id);
+        return await _context.Clients.FindAsync(id);
     }
 
 //POST
-    public Client Create(Client newClient) //Retorna un cliente, y de parametro
+    public async Task<Client> Create(Client newClient) //Retorna un cliente, y de parametro
     //acepta un cliente
     {
         _context.Clients.Add(newClient); //agregar al cliente
-        _context.SaveChanges();
+        await _context.SaveChangesAsync();
 
         return newClient; //retornamos ese nuevo cliente
     }
 
 //PUT Actualizar un registro
 //El metodo devuelve un void, de parametro acepta un cliente
-    public void Update(int id,Client client)
+    public async Task Update(int id,Client client)
     {
-        var existingClient = GetById(id); //metodo de arriba
+        var existingClient = await GetById(id); //metodo de arriba
 
         if(existingClient is not null)
         {
@@ -45,19 +46,19 @@ public class ClientService
             existingClient.Phonenumber = client.Phonenumber;
             existingClient.Email = client.Email;
 
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
     }
 
 //Delete
-    public void Delete(int id)
+    public async Task Delete(int id)
     {
-        var clientToDelete = GetById(id); //Almenamos el id en una variable
+        var clientToDelete = await GetById(id); //Almenamos el id en una variable
 
         if(clientToDelete is not null) //si la variable no es nula, realiza el
         {                              //remove
             _context.Clients.Remove(clientToDelete);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
     }
 }
