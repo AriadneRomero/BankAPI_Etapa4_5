@@ -31,7 +31,9 @@ public class ClientController : ControllerBase
         var client = await _service.GetById(id); 
 
         if(client is null)
-            return NotFound(); //devuelve un estatus 404 
+            return ClientNotFound(id);
+            //Enviamos un objeto como parametro del notfound
+            //Es un objeto anonimo, que solo tiene de propiedad message, para mostrar mensajes
         
         return client;
     }
@@ -56,7 +58,7 @@ public class ClientController : ControllerBase
     public async Task <IActionResult> Update(int id, Client client) //Esto en la url
     {
         if(id != client.Id)
-            return BadRequest(); //devuelve status 400
+            return BadRequest(new { message = $"El ID({id}) de la URL no coincide con el ID({client.Id}) del cuerpo de la solicitud."}); 
 
         var clientToUpdate = await _service.GetById(id);
 
@@ -67,7 +69,7 @@ public class ClientController : ControllerBase
         }
         else
         {
-            return NotFound();
+            return ClientNotFound(id);
         }
     }
 
@@ -83,7 +85,12 @@ public class ClientController : ControllerBase
         }
         else
         {
-            return NotFound();
+            return ClientNotFound(id);
         }
+    }
+
+    public NotFoundObjectResult ClientNotFound (int id)
+    {
+        return NotFound (new { message = $"El cliente con ID = {id} no existe."});
     }
 }
