@@ -1,5 +1,7 @@
+using Microsoft.EntityFrameworkCore;
 using BankAPI.Data;
 using BankAPI.Data.BankModels;
+using TestBankAPI.DTOS;
 
 namespace BankAPI.Services;
 
@@ -12,30 +14,36 @@ public class AccountService
     }
 
 //GET
-     public IEnumerable<Account> GetAll() 
+     public async Task<IEnumerable<Account>> GetAll() 
     {
-        return _context.Accounts.ToList();
+        return await _context.Accounts.ToListAsync();
     }
 
-    public Account? GetById(int id)
+    public async Task<Account?> GetById(int id)
     {
-        return _context.Accounts.Find(id);
+        return await _context.Accounts.FindAsync(id);
     }
 
 //POST
 
-    public Account Create(Account newAccount)
+    public async Task<Account> Create(AccountDTO newAccountDTO)
     {
+        var newAccount = new Account();
+
+        newAccount.AccountType = newAccountDTO.AccountType;
+        newAccount.ClientId = newAccountDTO.ClientId;
+        newAccount.Balance = newAccountDTO.Balance;
+
         _context.Accounts.Add(newAccount); 
-        _context.SaveChanges();
+        await _context.SaveChangesAsync();
 
         return newAccount; 
     }
 
 //PUT 
-    public void Update(int id,Account account)
+    public async Task Update(AccountDTO account)
     {
-        var existingAccount = GetById(id); 
+        var existingAccount = await GetById(account.Id); 
 
         if(existingAccount is not null)
         {
@@ -43,19 +51,19 @@ public class AccountService
             existingAccount.ClientId = account.ClientId;
             existingAccount.Balance = account.Balance;
 
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
     }
 
 //Delete
-    public void Delete(int id)
+    public async Task Delete(int id)
     {
-        var accountToDelete = GetById(id); 
+        var accountToDelete = await GetById(id); 
 
         if(accountToDelete is not null) 
         {
             _context.Accounts.Remove(accountToDelete);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
     }
 }

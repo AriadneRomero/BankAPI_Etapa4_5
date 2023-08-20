@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using BankAPI.Data;
 using BankAPI.Data.BankModels;
 
@@ -11,15 +12,14 @@ public class AccountTypeService
         _context = context;
     }
 
-//GET
-     public IEnumerable<AccountType> GetAll() 
+    public async Task <AccountType?> GetById(int id)
     {
-        return _context.AccountTypes.ToList();
+        return await _context.AccountTypes.FindAsync(id);
     }
 
-    public AccountType? GetById(int id)
-    {
-        return _context.AccountTypes.Find(id);
-    }
+        //  public IEnumerable<AccountType> GetAll() 
+    // {
+    //     return _context.AccountTypes.ToList();
+    // }
 
 }
