@@ -30,15 +30,15 @@ public class AccountController : ControllerBase
 
 //llamadas GET
     [HttpGet]
-    public async Task<IEnumerable<Account>> Get() 
+    public async Task<IEnumerable<AccountDtoOut>> Get() 
     {
         return await accountService.GetAll(); 
     }
 
     [HttpGet("{id}")] 
-    public async Task <ActionResult<Account>> GetById(int id) 
+    public async Task <ActionResult<AccountDtoOut>> GetById(int id) 
     {
-        var account = await accountService.GetById(id); 
+        var account = await accountService.GetDtoById(id); 
 
         if(account is null)
             return AccountNotFound(id); 
@@ -47,7 +47,7 @@ public class AccountController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create(AccountDTO account) 
+    public async Task<IActionResult> Create(AccountDtoIn account) 
     {
         string validationResult = await ValidateAccount(account);
 
@@ -60,7 +60,7 @@ public class AccountController : ControllerBase
     }
 
     [HttpPut("{id}")]
-    public async Task <IActionResult> Update(int id, AccountDTO account)
+    public async Task <IActionResult> Update(int id, AccountDtoIn account)
     {
         if(id != account.Id)
             return BadRequest(new {message = $"El ID({id}) de la URL no coincide con el ID({account.Id}) del cuerpo de la solicitud."});
@@ -104,7 +104,7 @@ public class AccountController : ControllerBase
         return NotFound (new { message = $"La cuenta con ID = {id} no existe."}); 
     }
 
-    public async Task<string> ValidateAccount(AccountDTO account)
+    public async Task<string> ValidateAccount(AccountDtoIn account)
     {
         string result = "Valid";
 

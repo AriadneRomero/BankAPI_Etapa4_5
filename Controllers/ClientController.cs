@@ -5,7 +5,7 @@ using BankAPI.Data.BankModels;
 namespace BankAPI.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[Route("api/[controller]")]
 public class ClientController : ControllerBase
 {
     //Constructor, estructura base del Controller
@@ -16,8 +16,7 @@ public class ClientController : ControllerBase
     }
 
 //llamadas GET
-    [HttpGet] //Una solicitud get hara que se ejecute el método de abajo
-                //Este metodo nos traera todos los registro
+    [HttpGet("getall")]
     public async Task<IEnumerable<Client>> Get() //nos devuelve una conexion de objetos tipo client
     {
         return await _service.GetAll(); //Nos devuelve la lista, toda la informacion
@@ -38,7 +37,7 @@ public class ClientController : ControllerBase
         return client;
     }
 
-    [HttpPost]
+    [HttpPost("create")]
     //El objeto recibira un parametro tipo(clase) clientes
     public async Task<IActionResult> Create(Client client) 
     {
@@ -54,7 +53,7 @@ public class ClientController : ControllerBase
         //que se acaba de crear
     
 
-    [HttpPut("{id}")]
+    [HttpPut("update/{id}")]
     public async Task <IActionResult> Update(int id, Client client) //Esto en la url
     {
         if(id != client.Id)
@@ -73,7 +72,7 @@ public class ClientController : ControllerBase
         }
     }
 
-    [HttpDelete("{id}")]
+    [HttpDelete("delete/{id}")]
     public async Task<IActionResult> Delete(int id)
     {
         var clientToDelete = await _service.GetById(id);

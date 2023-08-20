@@ -14,9 +14,30 @@ public class AccountService
     }
 
 //GET
-     public async Task<IEnumerable<Account>> GetAll() 
+    public async Task<IEnumerable<AccountDtoOut>> GetAll() 
     {
-        return await _context.Accounts.ToListAsync();
+        return await _context.Accounts.Select(a => new AccountDtoOut //()Haremos referencia a un objeto account
+        {
+            Id = a.Id,
+            AccountName = a.AccountTypeNavigation.Name, //referencia a la relacion de account con accountTyoe
+            ClientName = a.Client != null ? a.Client.Name: "",
+            Balance = a.Balance,
+            RegDate = a.RegDate
+        }).ToListAsync();
+    }
+
+    public async Task<AccountDtoOut?> GetDtoById(int id) 
+    {
+        return await _context.Accounts.
+            Where(a => a.Id == id).
+            Select(a => new AccountDtoOut //()Haremos referencia a un objeto account
+            {
+                Id = a.Id,
+                AccountName = a.AccountTypeNavigation.Name, //referencia a la relacion de account con accountTyoe
+                ClientName = a.Client != null ? a.Client.Name: "",
+                Balance = a.Balance,
+                RegDate = a.RegDate
+            }).SingleOrDefaultAsync(); //el metodo devuelve un objeto o nulo
     }
 
     public async Task<Account?> GetById(int id)
@@ -26,7 +47,7 @@ public class AccountService
 
 //POST
 
-    public async Task<Account> Create(AccountDTO newAccountDTO)
+    public async Task<Account> Create(AccountDtoIn newAccountDTO)
     {
         var newAccount = new Account();
 
@@ -41,7 +62,7 @@ public class AccountService
     }
 
 //PUT 
-    public async Task Update(AccountDTO account)
+    public async Task Update(AccountDtoIn account)
     {
         var existingAccount = await GetById(account.Id); 
 

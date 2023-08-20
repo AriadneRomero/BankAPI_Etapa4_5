@@ -24,7 +24,7 @@ public partial class Account
 
     
     [JsonIgnore]
-    public virtual AccountType? AccountTypeNavigation { get; set; } = null!;
+    public virtual AccountType AccountTypeNavigation { get; set; } = null!;
 
     [JsonIgnore]
     public virtual ICollection<BankTransaction> BankTransactions { get; set; } = new List<BankTransaction>();
