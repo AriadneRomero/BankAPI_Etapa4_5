@@ -39,7 +39,8 @@ public class LoginController : ControllerBase
         var claims = new[] 
         {
             new Claim(ClaimTypes.Name, admin.Name),
-            new Claim(ClaimTypes.Email, admin.Email)
+            new Claim(ClaimTypes.Email, admin.Email),
+            new Claim("AdminType", admin.AdminType)
             //Claim: Conjunto de valores que tiene que ver con la identidad del usuario
         };
 

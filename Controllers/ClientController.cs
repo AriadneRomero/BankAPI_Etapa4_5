@@ -39,6 +39,7 @@ public class ClientController : ControllerBase
         return client;
     }
 
+    [Authorize(Policy = "SuperAdmin")]
     [HttpPost("create")]
     //El objeto recibira un parametro tipo(clase) clientes
     public async Task<IActionResult> Create(Client client) 
@@ -54,7 +55,7 @@ public class ClientController : ControllerBase
         //2. Despues llamamos al metodo GetById, para eviarle devuelta al usuario es cliente
         //que se acaba de crear
     
-
+    [Authorize(Policy = "SuperAdmin")]
     [HttpPut("update/{id}")]
     public async Task <IActionResult> Update(int id, Client client) //Esto en la url
     {
@@ -74,6 +75,7 @@ public class ClientController : ControllerBase
         }
     }
 
+    [Authorize(Policy = "SuperAdmin")]
     [HttpDelete("delete/{id}")]
     public async Task<IActionResult> Delete(int id)
     {
