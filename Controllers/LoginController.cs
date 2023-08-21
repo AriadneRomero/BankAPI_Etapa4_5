@@ -56,4 +56,41 @@ public class LoginController : ControllerBase
 
         return token;
     }
+
+    [HttpPost("authenticate/client")]
+    public async Task<IActionResult> LoginClient(ClientDto clientDto)
+    {
+        var client = await loginService.GetClient(clientDto);
+
+        if(client is null)
+            return BadRequest( new { message = "Credenciales inválidas2." });
+        
+        string jwtToken = GenerateClientToken(client);
+
+        return Ok( new { token = jwtToken } );
+    }
+
+    private string GenerateClientToken(Client client)
+    {
+        var claims = new[] 
+        {
+            new Claim(ClaimTypes.Name, client.Name),
+            new Claim(ClaimTypes.Email, client.Email),
+            //Claim: Conjunto de valores que tiene que ver con la identidad del usuario
+        };
+
+        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config.GetSection("JWT:Key").Value));
+        var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature); //credencial para llevar una llave digital
+
+        var securityToken = new JwtSecurityToken(
+                            claims: claims,
+                            expires: DateTime.Now.AddMinutes(60),
+                            signingCredentials: creds);
+        
+        string token = new JwtSecurityTokenHandler().WriteToken(securityToken); //Token Serializado
+
+        return token;
+    }
+
+
 }
