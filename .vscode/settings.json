@@ -1,3 +1,5 @@
 {
-    "dotnet.defaultSolution": "BankAPI.sln"
+    "dotnet.defaultSolution": "BankAPI.sln",
+    "appService.preDeployTask": "publish-release",
+    "appService.deploySubpath": "bin/Release/net6.0/publish"
 }
