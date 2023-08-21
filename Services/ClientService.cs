@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using BankAPI.Data;
 using BankAPI.Data.BankModels;
+using TestBankAPI.DTOS;
 
 namespace BankAPI.Services;
 
@@ -45,6 +46,7 @@ public class ClientService
             existingClient.Name = client.Name;
             existingClient.Phonenumber = client.Phonenumber;
             existingClient.Email = client.Email;
+            existingClient.Pwd = client.Pwd;
 
             await _context.SaveChangesAsync();
         }

@@ -19,7 +19,7 @@ public class AccountService
         return await _context.Accounts.Select(a => new AccountDtoOut //()Haremos referencia a un objeto account
         {
             Id = a.Id,
-            AccountName = a.AccountTypeNavigation.Name, //referencia a la relacion de account con accountTyoe
+            AccountName = a.AccountTypeNavigation.Name, //referencia a la relacion de account con accountType
             ClientName = a.Client != null ? a.Client.Name: "",
             Balance = a.Balance,
             RegDate = a.RegDate
